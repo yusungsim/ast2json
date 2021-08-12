@@ -28,10 +28,9 @@ from ast import parse
 from .types import BUILTIN_PURE, BUILTIN_STR, BUILTIN_BYTES
 from .types import decode_bytes, decode_str
 
-
 def ast2json(node):
     assert isinstance(node, AST)
-    to_return = dict()
+    to_return = dict() 
     to_return['_type'] = node.__class__.__name__
     for attr in dir(node):
         if attr.startswith("_"):
@@ -43,10 +42,11 @@ def ast2json(node):
 def str2json(string):
     return ast2json(parse(string))
 
-
 def get_value(attr_value):
     if attr_value is None:
         return attr_value
+    if attr_value is Ellipsis:
+        return {'_type': 'Ellipsis', 'value': None}
     if isinstance(attr_value, BUILTIN_PURE):
         return attr_value
     if isinstance(attr_value, BUILTIN_BYTES):
